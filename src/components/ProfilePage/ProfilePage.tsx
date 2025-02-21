@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Paper, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query'; // Импортируем useQuery
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { useRouter } from 'next/navigation';
@@ -17,32 +17,26 @@ interface UserProfile {
 }
 
 const ProfilePage = () => {
-    const [user, setUser] = useState<UserProfile | null>(null);
     const token = useSelector((state: RootState) => state.auth.token);
     const router = useRouter();
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const storedToken = getAuthToken();
-            if (!token && !storedToken) {
-                router.push('/signin');
-                return;
-            }
+    const {  user, isLoading, isError } = useQuery<UserProfile, Error>('profile', authApi.getProfile, { // Используем useQuery
+        enabled: !!token || !!getAuthToken(), // Запрос выполняется только если есть токен
+        onError: () => {
+            router.push('/signin'); // Редирект на страницу входа при ошибке
+        },
+    });
 
-            try {
-                const profile = await authApi.getProfile();
-                setUser(profile);
-            } catch (error) {
-                console.error('Error fetching profile:', error);
-                router.push('/signin');
-            }
-        };
+    if (isLoading) {
+        return <Typography>Loading profile...</Typography>;
+    }
 
-        fetchProfile();
-    }, [token, router]);
+    if (isError) {
+        return <Typography color="error">Error loading profile.</Typography>;
+    }
 
     if (!user) {
-        return <Typography>Loading profile...</Typography>;
+        return null; // Или другой fallback, если данные не загрузились по какой-то причине, кроме ошибки (например, из-за disabled: false)
     }
 
     return (
