@@ -1,8 +1,25 @@
-import { Box } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { metadata } from './metadata';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-    return <Box>Привет</Box>;
+    const router = useRouter();
+
+    return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+            <Stack direction="column" spacing={2}>
+                <Button variant="contained" onClick={() => router.push('/signin')}>
+                    Войти
+                </Button>
+                <Button variant="contained" onClick={() => router.push('/signup')}>
+                    Регистрация
+                </Button>
+                <Button variant="contained" onClick={() => router.push('/profile')}>
+                    Профиль
+                </Button>
+            </Stack>
+        </Box>
+    );
 }
 
 export { metadata };
