@@ -8,6 +8,8 @@ import StoreProvider from '@/app/store/StoreProvider';
 import theme from '@/app/theme';
 import './globals.css';
 import { Metadata } from './metadata';
+import { Box, Button, Stack } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -24,6 +26,8 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const router = useRouter();
+
     return (
         <html lang='en'>
             <head>
@@ -35,6 +39,19 @@ export default function RootLayout({
                     <AppRouterCacheProvider>
                         <ThemeProvider theme={theme}>
                             <CssBaseline />
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+                                <Stack direction='row' spacing={2}>
+                                    <Button variant='contained' onClick={() => router.push('/signin')}>
+                                        Войти
+                                    </Button>
+                                    <Button variant='contained' onClick={() => router.push('/signup')}>
+                                        Регистрация
+                                    </Button>
+                                    <Button variant='contained' onClick={() => router.push('/profile')}>
+                                        Профиль
+                                    </Button>
+                                </Stack>
+                            </Box>
                             {children}
                         </ThemeProvider>
                     </AppRouterCacheProvider>
