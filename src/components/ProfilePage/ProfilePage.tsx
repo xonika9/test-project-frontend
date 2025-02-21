@@ -20,13 +20,13 @@ const ProfilePage = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const router = useRouter();
 
-    const { user, isLoading, isError } = useQuery<UserProfile, Error>({
-        // Используем useQuery
-        queryKey: ['profile'], // Ключ запроса
-        queryFn: authApi.getProfile, // Функция запроса
-        enabled: !!token || !!getAuthToken(), // Запрос выполняется только если есть токен
-        onError: () => {
-            router.push('/signin'); // Редирект на страницу входа при ошибке
+    const {  user, isLoading, isError } = useQuery<UserProfile, Error>({ // Исправлено: data as user
+        queryKey: ['profile'],
+        queryFn: authApi.getProfile,
+        enabled: !!token || !!getAuthToken(),
+        onError: (error) => { // Опция onError принимает функцию с аргументом error
+            console.error("Ошибка при загрузке профиля", error); // Добавим логирование ошибки для отладки
+            router.push('/signin');
         },
     });
 
@@ -39,7 +39,7 @@ const ProfilePage = () => {
     }
 
     if (!user) {
-        return null; // Или другой fallback, если данные не загрузились по какой-то причине, кроме ошибки (например, из-за disabled: false)
+        return null;
     }
 
     return (
@@ -55,8 +55,8 @@ const ProfilePage = () => {
                 <Typography variant='h4' component='h1' gutterBottom>
                     Profile
                 </Typography>
-                <Typography variant='body1'>Name: {user.name}</Typography>
-                <Typography variant='body1'>Email: {user.email}</Typography>
+                <Typography variant='body1'>Name: {user?.name}</Typography>
+                <Typography variant='body1'>Email: {user?.email}</Typography>
             </Paper>
         </Box>
     );
