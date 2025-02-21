@@ -1,3 +1,5 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -20,6 +22,7 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
     }, [isAuthenticated, router, token]);
 
     if (!isAuthenticated) {
+        router.push('/signin');
         return null;
     }
 
