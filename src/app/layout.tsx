@@ -5,7 +5,7 @@ import { Metadata } from './metadata';
 import StoreProvider from '@/app/store/StoreProvider';
 import LayoutButtons from '@/components/LayoutButtons/LayoutButtons';
 import MUIThemeProvider from '@/components/MUIThemeProvider/MUIThemeProvider';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Импортируем QueryClient и QueryClientProvider из @tanstack/react-query
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -31,9 +31,7 @@ export default function RootLayout({
                 <meta name='description' content={Metadata.description} />
             </head>
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                <QueryClientProvider client={queryClient}>
-                    {' '}
-                    {/* Оборачиваем QueryClientProvider */}
+                <QueryClientProvider client={queryClient}> {/* Оборачиваем QueryClientProvider */}
                     <StoreProvider>
                         <AppRouterCacheProvider>
                             <MUIThemeProvider>

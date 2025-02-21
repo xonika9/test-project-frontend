@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Paper, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query'; // Импортируем useQuery из @tanstack/react-query
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { useRouter } from 'next/navigation';
@@ -20,24 +20,21 @@ const ProfilePage = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const router = useRouter();
 
-    const { user, isLoading, isError } = useQuery<UserProfile, Error>(
-        'profile',
-        authApi.getProfile,
-        {
-            // Используем useQuery
-            enabled: !!token || !!getAuthToken(), // Запрос выполняется только если есть токен
-            onError: () => {
-                router.push('/signin'); // Редирект на страницу входа при ошибке
-            },
+    const {  user, isLoading, isError } = useQuery<UserProfile, Error>({ // Используем useQuery
+        queryKey: ['profile'], // Ключ запроса
+        queryFn: authApi.getProfile, // Функция запроса
+        enabled: !!token || !!getAuthToken(), // Запрос выполняется только если есть токен
+        onError: () => {
+            router.push('/signin'); // Редирект на страницу входа при ошибке
         },
-    );
+    });
 
     if (isLoading) {
         return <Typography>Loading profile...</Typography>;
     }
 
     if (isError) {
-        return <Typography color='error'>Error loading profile.</Typography>;
+        return <Typography color="error">Error loading profile.</Typography>;
     }
 
     if (!user) {
