@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/app/api/authApi';
+import { getAuthToken } from '@/utils/auth';
 
 interface UserProfile {
     id: number;
@@ -22,7 +23,8 @@ const ProfilePage = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            if (!token) {
+            const storedToken = getAuthToken();
+            if (!token && !storedToken) {
                 router.push('/signin');
                 return;
             }
@@ -32,6 +34,7 @@ const ProfilePage = () => {
                 setUser(profile);
             } catch (error) {
                 console.error('Error fetching profile:', error);
+                router.push('/signin');
             }
         };
 
