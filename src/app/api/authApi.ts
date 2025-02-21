@@ -11,23 +11,37 @@ interface RegisterPayload {
     password: string;
 }
 
-interface AuthResponse {
+interface LoginResponse {
     token: string;
-    user: {
-        id: string;
-        name: string;
-        email: string;
-    };
+}
+
+interface RegisterResponse {
+    id: number;
+    name: string;
+    email: string;
+}
+
+interface UserProfile {
+    id: number;
+    name: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export const authApi = {
-    login: async (payload: LoginPayload): Promise<AuthResponse> => {
-        const response = await apiClient.post('/auth/login', payload);
+    login: async (payload: LoginPayload): Promise<LoginResponse> => {
+        const response = await apiClient.post<LoginResponse>('/auth/login', payload);
         return response.data;
     },
 
-    register: async (payload: RegisterPayload): Promise<AuthResponse> => {
-        const response = await apiClient.post('/auth/register', payload);
+    register: async (payload: RegisterPayload): Promise<RegisterResponse> => {
+        const response = await apiClient.post<RegisterResponse>('/auth/register', payload);
         return response.data;
     },
+
+    getProfile: async (): Promise<UserProfile> => {
+        const response = await apiClient.get<UserProfile>('/users/profile');
+        return response.data;
+    }
 };

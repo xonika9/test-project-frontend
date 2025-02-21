@@ -21,17 +21,29 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin = true }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = isLogin
-                ? await authApi.login({ email, password })
-                : await authApi.register({ name, email, password });
-
-            setAuthToken(response.token);
-            dispatch(
-                setCredentials({
-                    token: response.token,
-                    user: response.user,
-                }),
-            );
+            if (isLogin) {
+                const loginResponse = await authApi.login({ email, password });
+                setAuthToken(loginResponse.token);
+                
+                const profile = await authApi.getProfile();
+                dispatch(
+                    setCredentials({
+                        token: loginResponse.token,
+                        user: profile,
+                    }),
+                );
+            } else {
+                const registerResponse = await authApi.register({ name, email, password });
+                setAuthToken(registerResponse.token);
+                
+                const profile = await authApi.getProfile();
+                dispatch(
+                    setCredentials({
+                        token: registerResponse.token,
+                        user: profile,
+                    }),
+                );
+            }
             router.push('/');
         } catch (err) {
             setError('Authentication failed. Please check your credentials.');
