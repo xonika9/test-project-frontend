@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
+import { getAuthToken } from '@/utils/auth';
 
 interface RequireAuthProps {
     children: React.ReactNode;
@@ -9,13 +10,14 @@ interface RequireAuthProps {
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
     const router = useRouter();
-    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const { isAuthenticated, token } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        const storedToken = getAuthToken();
+        if (!isAuthenticated && !storedToken) {
             router.push('/signin');
         }
-    }, [isAuthenticated, router]);
+    }, [isAuthenticated, router, token]);
 
     if (!isAuthenticated) {
         return null;
