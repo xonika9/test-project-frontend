@@ -4,7 +4,6 @@ import { Box, Paper, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query'; // Импортируем useQuery из @tanstack/react-query
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
-import { useRouter } from 'next/navigation';
 import { authApi } from '@/app/api/authApi';
 import { getAuthToken } from '@/utils/auth';
 
@@ -18,16 +17,11 @@ interface UserProfile {
 
 const ProfilePage = () => {
     const token = useSelector((state: RootState) => state.auth.token);
-    const router = useRouter();
 
-    const {  user, isLoading, isError } = useQuery<UserProfile, Error>({
+    const { data, isLoading, isError } = useQuery<UserProfile, Error>({
         queryKey: ['profile'],
         queryFn: authApi.getProfile,
         enabled: !!token || !!getAuthToken(),
-        onError: (error: Error) => { // Явно указываем тип error как Error
-            console.error('Ошибка при загрузке профиля', error);
-            router.push('/signin');
-        },
     });
 
     if (isLoading) {
@@ -38,7 +32,7 @@ const ProfilePage = () => {
         return <Typography color='error'>Error loading profile.</Typography>;
     }
 
-    if (!user) {
+    if (!data) {
         return null;
     }
 
@@ -55,8 +49,8 @@ const ProfilePage = () => {
                 <Typography variant='h4' component='h1' gutterBottom>
                     Profile
                 </Typography>
-                <Typography variant='body1'>Name: {user?.name}</Typography>
-                <Typography variant='body1'>Email: {user?.email}</Typography>
+                <Typography variant='body1'>Name: {data?.name}</Typography>
+                <Typography variant='body1'>Email: {data?.email}</Typography>
             </Paper>
         </Box>
     );
