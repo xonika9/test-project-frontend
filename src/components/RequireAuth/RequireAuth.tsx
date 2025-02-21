@@ -1,29 +1,27 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 
 interface RequireAuthProps {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
-  const router = useRouter();
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const router = useRouter();
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-  useEffect(() => {
+    useEffect(() => {
+        if (!isAuthenticated) {
+            router.push('/signin');
+        }
+    }, [isAuthenticated, router]);
+
     if (!isAuthenticated) {
-      router.push('/signin');
+        return null;
     }
-  }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  return <>{children}</>;
+    return <>{children}</>;
 };
 
 export default RequireAuth;

@@ -1,14 +1,13 @@
 import { AxiosInstance } from 'axios';
 import { store } from '@/app/store/store';
 import { logout } from '@/app/store/authSlice';
-import type { AppDispatch } from '@/app/store/store';
 
 export const setupInterceptors = (instance: AxiosInstance) => {
     instance.interceptors.request.use(
         config => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
+            if (typeof window !== 'undefined') {
+                const token = localStorage.getItem('token');
+                if (token) config.headers.Authorization = `Bearer ${token}`;
             }
             return config;
         },
