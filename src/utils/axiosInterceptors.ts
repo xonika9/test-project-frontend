@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { makeStore } from '@/app/store/store';
+import { store } from '@/app/store/store';
 import { logout } from '@/app/store/authSlice';
 
 export const setupInterceptors = (instance: AxiosInstance) => {
@@ -18,7 +18,7 @@ export const setupInterceptors = (instance: AxiosInstance) => {
         response => response,
         error => {
             if (error.response?.status === 401) {
-                makeStore.dispatch(logout());
+                store.dispatch(logout());
                 window.location.href = '/signin';
             }
             return Promise.reject(error);
