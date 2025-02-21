@@ -20,7 +20,8 @@ const ProfilePage = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const router = useRouter();
 
-    const {  user, isLoading, isError } = useQuery<UserProfile, Error>({ // Используем useQuery
+    const { user, isLoading, isError } = useQuery<UserProfile, Error>({
+        // Используем useQuery
         queryKey: ['profile'], // Ключ запроса
         queryFn: authApi.getProfile, // Функция запроса
         enabled: !!token || !!getAuthToken(), // Запрос выполняется только если есть токен
@@ -34,7 +35,7 @@ const ProfilePage = () => {
     }
 
     if (isError) {
-        return <Typography color="error">Error loading profile.</Typography>;
+        return <Typography color='error'>Error loading profile.</Typography>;
     }
 
     if (!user) {
