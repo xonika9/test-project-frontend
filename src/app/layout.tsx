@@ -10,6 +10,10 @@ import './globals.css';
 import { Metadata } from './metadata';
 import { Box, Button, Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '@/app/store/authSlice';
+import { removeAuthToken } from '@/utils/auth';
+import { RootState } from '@/app/store/store';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -27,6 +31,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     const router = useRouter();
+    const dispatch = useDispatch();
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
+    const handleLogout = () => {
+        dispatch(logout());
+        removeAuthToken();
+        router.push('/signin');
+    };
 
     return (
         <html lang='en'>
@@ -41,12 +53,20 @@ export default function RootLayout({
                             <CssBaseline />
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
                                 <Stack direction='row' spacing={2}>
-                                    <Button variant='contained' onClick={() => router.push('/signin')}>
-                                        Войти
-                                    </Button>
-                                    <Button variant='contained' onClick={() => router.push('/signup')}>
-                                        Регистрация
-                                    </Button>
+                                    {isAuthenticated ? (
+                                        <Button variant='contained' onClick={handleLogout}>
+                                            Выйти
+                                        </Button>
+                                    ) : (
+                                        <>
+                                            <Button variant='contained' onClick={() => router.push('/signin')}>
+                                                Войти
+                                            </Button>
+                                            <Button variant='contained' onClick={() => router.push('/signup')}>
+                                                Регистрация
+                                            </Button>
+                                        </>
+                                    )}
                                     <Button variant='contained' onClick={() => router.push('/profile')}>
                                         Профиль
                                     </Button>
