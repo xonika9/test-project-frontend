@@ -21,6 +21,9 @@ const LayoutButtons = () => {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
             <Stack direction='row' spacing={2}>
+                <Button variant='contained' onClick={() => router.push('/')}>
+                    Главная
+                </Button>
                 {isAuthenticated ? (
                     <>
                         <Button variant='contained' onClick={() => router.push('/profile')}>
