@@ -22,6 +22,7 @@ const ProfilePage = () => {
         queryKey: ['profile'],
         queryFn: authApi.getProfile,
         enabled: !!token || !!getAuthToken(),
+        staleTime: 300000, // 5 минут в миллисекундах - данные считаются свежими в течение 5 минут
     });
 
     if (isLoading) {
