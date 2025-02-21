@@ -47,33 +47,35 @@ export default function RootLayout({
                 <meta name='description' content={Metadata.description} />
             </head>
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                <AppRouterCacheProvider>
-                    <ThemeProvider theme={theme}>
-                        <CssBaseline />
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                            <Stack direction='row' spacing={2}>
-                                {isAuthenticated ? (
-                                    <Button variant='contained' onClick={handleLogout}>
-                                        Выйти
+                <StoreProvider>
+                    <AppRouterCacheProvider>
+                        <ThemeProvider theme={theme}>
+                            <CssBaseline />
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+                                <Stack direction='row' spacing={2}>
+                                    {isAuthenticated ? (
+                                        <Button variant='contained' onClick={handleLogout}>
+                                            Выйти
+                                        </Button>
+                                    ) : (
+                                        <>
+                                            <Button variant='contained' onClick={() => router.push('/signin')}>
+                                                Войти
+                                            </Button>
+                                            <Button variant='contained' onClick={() => router.push('/signup')}>
+                                                Регистрация
+                                            </Button>
+                                        </>
+                                    )}
+                                    <Button variant='contained' onClick={() => router.push('/profile')}>
+                                        Профиль
                                     </Button>
-                                ) : (
-                                    <>
-                                        <Button variant='contained' onClick={() => router.push('/signin')}>
-                                            Войти
-                                        </Button>
-                                        <Button variant='contained' onClick={() => router.push('/signup')}>
-                                            Регистрация
-                                        </Button>
-                                    </>
-                                )}
-                                <Button variant='contained' onClick={() => router.push('/profile')}>
-                                    Профиль
-                                </Button>
-                            </Stack>
-                        </Box>
-                        {children}
-                    </ThemeProvider>
-                </AppRouterCacheProvider>
+                                </Stack>
+                            </Box>
+                            {children}
+                        </ThemeProvider>
+                    </AppRouterCacheProvider>
+                </StoreProvider>
             </body>
         </html>
     );
