@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Button, Stack } from '@mui/material';
 import { metadata } from './metadata';
 import { useRouter } from 'next/navigation';
