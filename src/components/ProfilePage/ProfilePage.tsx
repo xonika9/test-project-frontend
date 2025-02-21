@@ -5,15 +5,18 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { useRouter } from 'next/navigation';
+import { authApi } from '@/app/api/authApi';
 
-interface User {
+interface UserProfile {
+    id: number;
     name: string;
     email: string;
-    // Add other user properties as needed
+    createdAt: string;
+    updatedAt: string;
 }
 
 const ProfilePage = () => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserProfile | null>(null);
     const token = useSelector((state: RootState) => state.auth.token);
     const router = useRouter();
 
@@ -24,21 +27,9 @@ const ProfilePage = () => {
                 return;
             }
 
-            // Replace this with your actual API call to fetch user data
             try {
-                const response = await fetch('/api/users/profile', {
-                    // Replace '/api/profile' with your actual endpoint
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch profile');
-                }
-
-                const data = await response.json();
-                setUser(data); // Assuming the API returns user data in the correct format
+                const profile = await authApi.getProfile();
+                setUser(profile);
             } catch (error) {
                 console.error('Error fetching profile:', error);
                 // Handle error appropriately (e.g., display an error message)
