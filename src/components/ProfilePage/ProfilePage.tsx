@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
@@ -26,7 +26,8 @@ const ProfilePage = () => {
 
             // Replace this with your actual API call to fetch user data
             try {
-                const response = await fetch('/api/profile', { // Replace '/api/profile' with your actual endpoint
+                const response = await fetch('/api/users/profile', {
+                    // Replace '/api/profile' with your actual endpoint
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -61,11 +62,11 @@ const ProfilePage = () => {
             }}
         >
             <Paper elevation={3} sx={{ padding: 3, maxWidth: 400 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
+                <Typography variant='h4' component='h1' gutterBottom>
                     Profile
                 </Typography>
-                <Typography variant="body1">Name: {user.name}</Typography>
-                <Typography variant="body1">Email: {user.email}</Typography>
+                <Typography variant='body1'>Name: {user.name}</Typography>
+                <Typography variant='body1'>Email: {user.email}</Typography>
                 {/* Display other user information here */}
             </Paper>
         </Box>
