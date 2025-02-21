@@ -32,7 +32,6 @@ const ProfilePage = () => {
                 setUser(profile);
             } catch (error) {
                 console.error('Error fetching profile:', error);
-                // Handle error appropriately (e.g., display an error message)
             }
         };
 
@@ -58,7 +57,6 @@ const ProfilePage = () => {
                 </Typography>
                 <Typography variant='body1'>Name: {user.name}</Typography>
                 <Typography variant='body1'>Email: {user.email}</Typography>
-                {/* Display other user information here */}
             </Paper>
         </Box>
     );
