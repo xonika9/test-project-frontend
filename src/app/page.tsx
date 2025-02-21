@@ -1,8 +1,8 @@
 'use client';
 
 import { Box, Button, Stack } from '@mui/material';
-import { metadata } from './metadata';
 import { useRouter } from 'next/navigation';
+import { metadata } from './metadata';
 
 export default function Home() {
     const router = useRouter();
@@ -23,5 +23,3 @@ export default function Home() {
         </Box>
     );
 }
-
-export { metadata };

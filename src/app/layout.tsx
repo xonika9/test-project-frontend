@@ -7,6 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import StoreProvider from '@/app/store/StoreProvider';
 import theme from '@/app/theme';
 import './globals.css';
+import { metadata } from './metadata';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -25,6 +26,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='en'>
+            <head>
+                <title>{metadata.title}</title>
+                <meta name="description" content={metadata.description} />
+            </head>
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <StoreProvider>
                     <AppRouterCacheProvider>
