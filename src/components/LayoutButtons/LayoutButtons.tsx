@@ -22,9 +22,14 @@ const LayoutButtons = () => {
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
             <Stack direction='row' spacing={2}>
                 {isAuthenticated ? (
-                    <Button variant='contained' onClick={handleLogout}>
-                        Выйти
-                    </Button>
+                    <>
+                        <Button variant='contained' onClick={() => router.push('/profile')}>
+                            Профиль
+                        </Button>
+                        <Button variant='contained' onClick={handleLogout}>
+                            Выйти
+                        </Button>
+                    </>
                 ) : (
                     <>
                         <Button variant='contained' onClick={() => router.push('/signin')}>
@@ -35,9 +40,6 @@ const LayoutButtons = () => {
                         </Button>
                     </>
                 )}
-                <Button variant='contained' onClick={() => router.push('/profile')}>
-                    Профиль
-                </Button>
             </Stack>
         </Box>
     );
