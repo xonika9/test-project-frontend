@@ -20,14 +20,12 @@ const ProfilePage = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const router = useRouter();
 
-    const { user, isLoading, isError } = useQuery<UserProfile, Error>({
-        // Исправлено: data as user
+    const {  user, isLoading, isError } = useQuery<UserProfile, Error>({
         queryKey: ['profile'],
         queryFn: authApi.getProfile,
         enabled: !!token || !!getAuthToken(),
-        onError: error => {
-            // Опция onError принимает функцию с аргументом error
-            console.error('Ошибка при загрузке профиля', error); // Добавим логирование ошибки для отладки
+        onError: (error: Error) => { // Явно указываем тип error как Error
+            console.error('Ошибка при загрузке профиля', error);
             router.push('/signin');
         },
     });
