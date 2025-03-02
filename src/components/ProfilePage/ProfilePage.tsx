@@ -47,9 +47,17 @@ const ProfilePage = () => {
             .nullable()
             .defined(),
         location: yup.string().nullable().defined(),
-        language: yup.string().oneOf(['ru', 'en'] as const).nullable().defined(),
+        language: yup
+            .string()
+            .oneOf(['ru', 'en'] as const)
+            .nullable()
+            .defined(),
         timezone: yup.string().nullable().defined(),
-        themePreference: yup.string().oneOf(['light', 'dark'] as const).nullable().defined(),
+        themePreference: yup
+            .string()
+            .oneOf(['light', 'dark'] as const)
+            .nullable()
+            .defined(),
     });
 
     const [editMode, setEditMode] = useState(false);
@@ -418,146 +426,6 @@ const ProfilePage = () => {
                         </Box>
                     )}
                 </Box>
-                    <Box
-                        component='form'
-                        onSubmit={handleSubmit(onSubmit)}
-                        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-                    >
-                        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-                            <Controller
-                                name='firstName'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label='Имя'
-                                        error={!!errors.firstName}
-                                        helperText={errors.firstName?.message}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name='lastName'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label='Фамилия'
-                                        error={!!errors.lastName}
-                                        helperText={errors.lastName?.message}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name='username'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label='Логин'
-                                        error={!!errors.username}
-                                        helperText={errors.username?.message}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name='phoneNumber'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label='Телефон'
-                                        error={!!errors.phoneNumber}
-                                        helperText={errors.phoneNumber?.message}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name='location'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label='Местоположение'
-                                        error={!!errors.location}
-                                        helperText={errors.location?.message}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name='language'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        select
-                                        label='Язык'
-                                        error={!!errors.language}
-                                        helperText={errors.language?.message}
-                                    >
-                                        <MenuItem value='ru'>Русский</MenuItem>
-                                        <MenuItem value='en'>English</MenuItem>
-                                    </TextField>
-                                )}
-                            />
-                            <Controller
-                                name='themePreference'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        select
-                                        label='Тема'
-                                        error={!!errors.themePreference}
-                                        helperText={errors.themePreference?.message}
-                                    >
-                                        <MenuItem value='light'>Светлая</MenuItem>
-                                        <MenuItem value='dark'>Темная</MenuItem>
-                                    </TextField>
-                                )}
-                            />
-                        </Box>
-                        <Controller
-                            name='bio'
-                            control={control}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    label='Биография'
-                                    multiline
-                                    rows={3}
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                    error={!!errors.bio}
-                                    helperText={errors.bio?.message}
-                                />
-                            )}
-                        />
-                        <Controller
-                            name='avatarUrl'
-                            control={control}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    label='URL аватара'
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                    error={!!errors.avatarUrl}
-                                    helperText={errors.avatarUrl?.message}
-                                />
-                            )}
-                        />
-                        <Button
-                            type='submit'
-                            variant='contained'
-                            color='primary'
-                            sx={{ mt: 2 }}
-                            disabled={mutation.isPending}
-                        >
-                            {mutation.isPending ? 'Saving...' : 'Save Changes'}
-                        </Button>
-                    </Box>
-                )}
             </Paper>
         </Box>
     );
