@@ -1,5 +1,6 @@
 import { Box, MenuItem, TextField, Typography } from '@mui/material';
 import { Control, Controller, FieldError } from 'react-hook-form';
+import { LANGUAGES, THEMES } from '@/constants/profile';
 
 interface ProfileFieldProps {
     name: string;
@@ -73,9 +74,9 @@ const ProfileField = ({
                 <Typography>
                     {name === 'language' && value
                         ? LANGUAGES.find(lang => lang.value === value)?.label
-                    : name === 'themePreference' && value
-                        ? THEMES.find(theme => theme.value === value)?.label
-                    : value || 'Не указано'}
+                        : name === 'themePreference' && value
+                          ? THEMES.find(theme => theme.value === value)?.label
+                          : value || 'Не указано'}
                 </Typography>
             )}
         </Box>
