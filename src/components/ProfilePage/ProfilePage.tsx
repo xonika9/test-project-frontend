@@ -133,39 +133,291 @@ const ProfilePage = () => {
                     <Typography variant='h4' component='h1'>
                         Profile
                     </Typography>
-                    <Button variant='contained' onClick={() => setEditMode(!editMode)}>
-                        {editMode ? 'Cancel' : 'Edit'}
-                    </Button>
+                    {!editMode && (
+                        <Button variant='contained' onClick={() => setEditMode(true)}>
+                            Редактировать
+                        </Button>
+                    )}
                 </Box>
 
-                {!editMode ? (
-                    <>
-                        <Typography variant='body1' sx={{ mb: 1 }}>
-                            Name: {data?.firstName && `${data.firstName} ${data.lastName}`}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    {/* Поле имени */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Имя:
                         </Typography>
-                        <Typography variant='body1' sx={{ mb: 1 }}>
-                            Email: {data?.email}
+                        {editMode ? (
+                            <Controller
+                                name='firstName'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.firstName}
+                                        helperText={errors.firstName?.message}
+                                    />
+                                )}
+                            />
+                        ) : (
+                            <Typography>{data.firstName || 'Не указано'}</Typography>
+                        )}
+                    </Box>
+
+                    {/* Поле фамилии */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Фамилия:
                         </Typography>
-                        {data?.bio && (
-                            <Typography variant='body1' sx={{ mb: 1 }}>
-                                Bio: {data.bio}
+                        {editMode ? (
+                            <Controller
+                                name='lastName'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.lastName}
+                                        helperText={errors.lastName?.message}
+                                    />
+                                )}
+                            />
+                        ) : (
+                            <Typography>{data.lastName || 'Не указано'}</Typography>
+                        )}
+                    </Box>
+
+                    {/* Поле email */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Email:
+                        </Typography>
+                        <Typography>{data.email}</Typography>
+                    </Box>
+
+                    {/* Поле логина */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Логин:
+                        </Typography>
+                        {editMode ? (
+                            <Controller
+                                name='username'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.username}
+                                        helperText={errors.username?.message}
+                                    />
+                                )}
+                            />
+                        ) : (
+                            <Typography>{data.username || 'Не указано'}</Typography>
+                        )}
+                    </Box>
+
+                    {/* Поле телефона */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Телефон:
+                        </Typography>
+                        {editMode ? (
+                            <Controller
+                                name='phoneNumber'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.phoneNumber}
+                                        helperText={errors.phoneNumber?.message}
+                                    />
+                                )}
+                            />
+                        ) : (
+                            <Typography>{data.phoneNumber || 'Не указано'}</Typography>
+                        )}
+                    </Box>
+
+                    {/* Поле местоположения */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Местоположение:
+                        </Typography>
+                        {editMode ? (
+                            <Controller
+                                name='location'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.location}
+                                        helperText={errors.location?.message}
+                                    />
+                                )}
+                            />
+                        ) : (
+                            <Typography>{data.location || 'Не указано'}</Typography>
+                        )}
+                    </Box>
+
+                    {/* Поле языка */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Язык:
+                        </Typography>
+                        {editMode ? (
+                            <Controller
+                                name='language'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        select
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.language}
+                                        helperText={errors.language?.message}
+                                    >
+                                        <MenuItem value='ru'>Русский</MenuItem>
+                                        <MenuItem value='en'>English</MenuItem>
+                                    </TextField>
+                                )}
+                            />
+                        ) : (
+                            <Typography>
+                                {data.language === 'ru' ? 'Русский' : 'English'}
                             </Typography>
                         )}
-                        {data?.location && (
-                            <Typography variant='body1' sx={{ mb: 1 }}>
-                                Location: {data.location}
-                            </Typography>
-                        )}
-                        {data?.phoneNumber && (
-                            <Typography variant='body1' sx={{ mb: 1 }}>
-                                Phone: {data.phoneNumber}
-                            </Typography>
-                        )}
-                        <Typography variant='caption'>
-                            Last login: {new Date(data?.lastLoginAt || '').toLocaleString()}
+                    </Box>
+
+                    {/* Поле темы */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Тема:
                         </Typography>
-                    </>
-                ) : (
+                        {editMode ? (
+                            <Controller
+                                name='themePreference'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        select
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.themePreference}
+                                        helperText={errors.themePreference?.message}
+                                    >
+                                        <MenuItem value='light'>Светлая</MenuItem>
+                                        <MenuItem value='dark'>Темная</MenuItem>
+                                    </TextField>
+                                )}
+                            />
+                        ) : (
+                            <Typography>
+                                {data.themePreference === 'light' ? 'Светлая' : 'Темная'}
+                            </Typography>
+                        )}
+                    </Box>
+
+                    {/* Поле биографии */}
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120, pt: 1 }}>
+                            Биография:
+                        </Typography>
+                        {editMode ? (
+                            <Controller
+                                name='bio'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        multiline
+                                        rows={3}
+                                        size='small'
+                                        error={!!errors.bio}
+                                        helperText={errors.bio?.message}
+                                    />
+                                )}
+                            />
+                        ) : (
+                            <Typography>{data.bio || 'Не указано'}</Typography>
+                        )}
+                    </Box>
+
+                    {/* Поле аватара */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant='body1' sx={{ minWidth: 120 }}>
+                            Аватар:
+                        </Typography>
+                        {editMode ? (
+                            <Controller
+                                name='avatarUrl'
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        size='small'
+                                        error={!!errors.avatarUrl}
+                                        helperText={errors.avatarUrl?.message}
+                                    />
+                                )}
+                            />
+                        ) : data.avatarUrl ? (
+                            <img
+                                src={data.avatarUrl}
+                                alt='Аватар'
+                                style={{ width: 100, height: 100, borderRadius: '50%' }}
+                            />
+                        ) : (
+                            <Typography>Не указано</Typography>
+                        )}
+                    </Box>
+
+                    {/* Дополнительная информация */}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 2 }}>
+                        <Typography variant='body2'>
+                            Дата регистрации: {new Date(data.createdAt).toLocaleDateString()}
+                        </Typography>
+                        <Typography variant='body2'>
+                            Последнее обновление: {new Date(data.updatedAt).toLocaleDateString()}
+                        </Typography>
+                        <Typography variant='body2'>
+                            Последний вход: {new Date(data.lastLoginAt || '').toLocaleString()}
+                        </Typography>
+                    </Box>
+
+                    {editMode && (
+                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                color='primary'
+                                disabled={mutation.isPending}
+                            >
+                                {mutation.isPending ? 'Сохранение...' : 'Сохранить изменения'}
+                            </Button>
+                            <Button
+                                variant='outlined'
+                                color='error'
+                                onClick={() => setEditMode(false)}
+                            >
+                                Отмена
+                            </Button>
+                        </Box>
+                    )}
+                </Box>
                     <Box
                         component='form'
                         onSubmit={handleSubmit(onSubmit)}
