@@ -12,26 +12,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-interface UserProfile {
-    id: number;
-    name: string;
-    email: string;
-    createdAt: string;
-    updatedAt: string;
-    firstName: string | null;
-    lastName: string | null;
-    username: string | null;
-    bio: string | null;
-    avatarUrl: string | null;
-    phoneNumber: string | null;
-    location: string | null;
-    language: string | null;
-    timezone: string | null;
-    themePreference: string | null;
-    lastLoginAt: string | null;
-    isActive: boolean;
-    role: string | null;
-}
+import { UserProfile } from '@/app/api/authApi';
 
 const ProfilePage = () => {
     // Схема валидации
@@ -114,7 +95,11 @@ const ProfilePage = () => {
     // Сбрасываем форму при изменении данных
     useEffect(() => {
         if (data) {
-            reset(data);
+            reset({
+                ...data,
+                language: data.language as 'ru' | 'en' | null,
+                themePreference: data.themePreference as 'light' | 'dark' | null
+            });
         }
     }, [data, reset]);
 
@@ -133,13 +118,13 @@ const ProfilePage = () => {
     const onSubmit = async (formData: ProfileFormValues) => {
         console.log('Отправляемые данные:', formData);
         try {
-            // Убираем null значения перед отправкой
-            const payload = Object.fromEntries(
-                Object.entries(formData).map(([key, value]) => [
-                    key, 
-                    value === null ? undefined : value
-                ])
-            );
+            // Преобразуем данные в формат UserProfile
+            const payload: UserProfile = {
+                ...data!,
+                ...formData,
+                language: formData.language as 'ru' | 'en' | null,
+                themePreference: formData.themePreference as 'light' | 'dark' | null
+            };
             
             console.log('Данные после обработки:', payload);
             const result = await mutation.mutateAsync(payload);

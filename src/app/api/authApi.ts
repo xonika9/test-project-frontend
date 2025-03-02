@@ -21,7 +21,7 @@ interface RegisterResponse {
     email: string;
 }
 
-interface UserProfile {
+export interface UserProfile {
     id: number;
     name: string;
     email: string;
@@ -34,9 +34,9 @@ interface UserProfile {
     avatarUrl: string | null;
     phoneNumber: string | null;
     location: string | null;
-    language: string | null;
+    language: 'ru' | 'en' | null;
     timezone: string | null;
-    themePreference: string | null;
+    themePreference: 'light' | 'dark' | null;
     lastLoginAt: string | null;
     isActive: boolean;
     role: string | null;
