@@ -130,8 +130,24 @@ const ProfilePage = () => {
         return null;
     }
 
-    const onSubmit = (data: ProfileFormValues) => {
-        mutation.mutate(data);
+    const onSubmit = async (formData: ProfileFormValues) => {
+        console.log('Отправляемые данные:', formData);
+        try {
+            // Убираем null значения перед отправкой
+            const payload = Object.fromEntries(
+                Object.entries(formData).map(([key, value]) => [
+                    key, 
+                    value === null ? undefined : value
+                ])
+            );
+            
+            console.log('Данные после обработки:', payload);
+            const result = await mutation.mutateAsync(payload);
+            console.log('Ответ сервера:', result);
+        } catch (error) {
+            console.error('Ошибка при обновлении профиля:', error);
+            alert('Произошла ошибка при сохранении профиля. Проверьте консоль для подробностей.');
+        }
     };
 
     return (
@@ -148,7 +164,11 @@ const ProfilePage = () => {
                     )}
                 </Box>
 
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box 
+                    component='form'
+                    onSubmit={handleSubmit(onSubmit)}
+                    sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+                >
                     {/* Поле имени */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Typography variant='body1' sx={{ minWidth: 120 }}>
@@ -413,6 +433,7 @@ const ProfilePage = () => {
                                 variant='contained'
                                 color='primary'
                                 disabled={mutation.isPending}
+                                sx={{ minWidth: 200 }}
                             >
                                 {mutation.isPending ? 'Сохранение...' : 'Сохранить изменения'}
                             </Button>
@@ -420,6 +441,7 @@ const ProfilePage = () => {
                                 variant='outlined'
                                 color='error'
                                 onClick={() => setEditMode(false)}
+                                sx={{ minWidth: 200 }}
                             >
                                 Отмена
                             </Button>
