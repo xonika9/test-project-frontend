@@ -1,13 +1,13 @@
 'use client';
 
 import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { authApi } from '@/app/api/authApi';
 import { getAuthToken } from '@/utils/auth';
-import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -40,7 +40,10 @@ const ProfilePage = () => {
         username: yup.string().nullable(),
         bio: yup.string().nullable(),
         avatarUrl: yup.string().url('Некорректный URL').nullable(),
-        phoneNumber: yup.string().matches(/^\+?[0-9]{10,15}$/, 'Некорректный номер телефона').nullable(),
+        phoneNumber: yup
+            .string()
+            .matches(/^\+?[0-9]{10,15}$/, 'Некорректный номер телефона')
+            .nullable(),
         location: yup.string().nullable(),
         language: yup.string().oneOf(['ru', 'en']).required(),
         timezone: yup.string().required(),
@@ -58,7 +61,12 @@ const ProfilePage = () => {
         staleTime: 300000,
     });
 
-    const { control, handleSubmit, reset, formState: { errors } } = useForm<UserProfile>({
+    const {
+        control,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<UserProfile>({
         resolver: yupResolver(profileSchema),
         defaultValues: {
             firstName: '',
@@ -80,9 +88,9 @@ const ProfilePage = () => {
             queryClient.invalidateQueries({ queryKey: ['profile'] });
             setEditMode(false);
         },
-        onError: (error) => {
+        onError: error => {
             console.error('Profile update failed:', error);
-        }
+        },
     });
 
     // Сбрасываем форму при изменении данных
@@ -152,7 +160,7 @@ const ProfilePage = () => {
                     <Box component='form' sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
                             <Controller
-                                name="firstName"
+                                name='firstName'
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -164,7 +172,7 @@ const ProfilePage = () => {
                                 )}
                             />
                             <Controller
-                                name="lastName"
+                                name='lastName'
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -176,7 +184,7 @@ const ProfilePage = () => {
                                 )}
                             />
                             <Controller
-                                name="username"
+                                name='username'
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -188,7 +196,7 @@ const ProfilePage = () => {
                                 )}
                             />
                             <Controller
-                                name="phoneNumber"
+                                name='phoneNumber'
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -200,7 +208,7 @@ const ProfilePage = () => {
                                 )}
                             />
                             <Controller
-                                name="location"
+                                name='location'
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -212,7 +220,7 @@ const ProfilePage = () => {
                                 )}
                             />
                             <Controller
-                                name="language"
+                                name='language'
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -228,7 +236,7 @@ const ProfilePage = () => {
                                 )}
                             />
                             <Controller
-                                name="themePreference"
+                                name='themePreference'
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -245,7 +253,7 @@ const ProfilePage = () => {
                             />
                         </Box>
                         <Controller
-                            name="bio"
+                            name='bio'
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -261,7 +269,7 @@ const ProfilePage = () => {
                             )}
                         />
                         <Controller
-                            name="avatarUrl"
+                            name='avatarUrl'
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -275,7 +283,7 @@ const ProfilePage = () => {
                             )}
                         />
                         <Button
-                            type="submit"
+                            type='submit'
                             variant='contained'
                             color='primary'
                             sx={{ mt: 2 }}

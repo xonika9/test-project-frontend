@@ -72,7 +72,7 @@ export const authApi = {
     },
 
     updateProfile: async (payload: UpdateProfilePayload): Promise<UserProfile> => {
-        const response = await apiClient.patch<UserProfile>('/users/profile', payload);
+        const response = await apiClient.put<UserProfile>('/users/profile', payload);
         return response.data;
-    }
+    },
 };
