@@ -30,6 +30,20 @@ interface UserProfile {
 }
 
 const ProfilePage = () => {
+    const [editMode, setEditMode] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        username: '',
+        bio: '',
+        avatarUrl: '',
+        phoneNumber: '',
+        location: '',
+        language: 'ru',
+        timezone: 'Europe/Moscow',
+        themePreference: 'light',
+    });
+
     const token = useSelector((state: RootState) => state.auth.token);
 
     const { data, isLoading, isError } = useQuery<UserProfile, Error>({
@@ -37,6 +51,20 @@ const ProfilePage = () => {
         queryFn: authApi.getProfile,
         enabled: !!token || !!getAuthToken(),
         staleTime: 300000,
+        onSuccess: (data) => {
+            setFormData({
+                firstName: data?.firstName || '',
+                lastName: data?.lastName || '',
+                username: data?.username || '',
+                bio: data?.bio || '',
+                avatarUrl: data?.avatarUrl || '',
+                phoneNumber: data?.phoneNumber || '',
+                location: data?.location || '',
+                language: data?.language || 'ru',
+                timezone: data?.timezone || 'Europe/Moscow',
+                themePreference: data?.themePreference || 'light',
+            });
+        }
     });
 
     if (isLoading) {
@@ -50,20 +78,6 @@ const ProfilePage = () => {
     if (!data) {
         return null;
     }
-
-    const [editMode, setEditMode] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: data?.firstName || '',
-        lastName: data?.lastName || '',
-        username: data?.username || '',
-        bio: data?.bio || '',
-        avatarUrl: data?.avatarUrl || '',
-        phoneNumber: data?.phoneNumber || '',
-        location: data?.location || '',
-        language: data?.language || 'ru',
-        timezone: data?.timezone || 'Europe/Moscow',
-        themePreference: data?.themePreference || 'light',
-    });
 
     const handleUpdateProfile = async () => {
         try {
