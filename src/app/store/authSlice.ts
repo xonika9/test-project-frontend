@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { getAuthToken } from '@/utils/auth';
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
   firstName: string | null;
   lastName: string | null;
   username: string | null;
@@ -39,7 +39,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ token: string; user: any }>) => {
+    setCredentials: (state, action: PayloadAction<{ token: string; user: User }>) => {
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.user = action.payload.user;
@@ -48,6 +48,15 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.user = null;
+    },
+    updateProfile: (state, action: PayloadAction<Partial<User>>) => {
+      if (state.user) {
+        state.user = {
+          ...state.user,
+          ...action.payload,
+          updatedAt: new Date().toISOString(),
+        };
+      }
     },
   },
 });

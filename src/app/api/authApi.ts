@@ -42,15 +42,17 @@ interface UserProfile {
     role: string | null;
 }
 
-interface UpdateProfilePayload {
-    firstName?: string;
-    lastName?: string;
-    bio?: string;
-    phoneNumber?: string;
-    location?: string;
-    language?: string;
-    timezone?: string;
-    themePreference?: string;
+export interface UpdateProfilePayload {
+    firstName?: string | null;
+    lastName?: string | null;
+    username?: string | null;
+    bio?: string | null;
+    avatarUrl?: string | null;
+    phoneNumber?: string | null;
+    location?: string | null;
+    language?: string | null;
+    timezone?: string | null;
+    themePreference?: string | null;
 }
 
 export const authApi = {

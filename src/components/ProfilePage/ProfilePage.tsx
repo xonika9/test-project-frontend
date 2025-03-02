@@ -42,9 +42,14 @@ const ProfilePage = () => {
     const [formData, setFormData] = useState({
         firstName: data?.firstName || '',
         lastName: data?.lastName || '',
+        username: data?.username || '',
         bio: data?.bio || '',
+        avatarUrl: data?.avatarUrl || '',
         phoneNumber: data?.phoneNumber || '',
         location: data?.location || '',
+        language: data?.language || 'ru',
+        timezone: data?.timezone || 'Europe/Moscow',
+        themePreference: data?.themePreference || 'light',
     });
 
     const handleUpdateProfile = async () => {
@@ -99,34 +104,66 @@ const ProfilePage = () => {
                     </>
                 ) : (
                     <Box component='form' sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+                            <TextField
+                                label='Имя'
+                                value={formData.firstName}
+                                onChange={e => setFormData({ ...formData, firstName: e.target.value })}
+                            />
+                            <TextField
+                                label='Фамилия'
+                                value={formData.lastName}
+                                onChange={e => setFormData({ ...formData, lastName: e.target.value })}
+                            />
+                            <TextField
+                                label='Логин'
+                                value={formData.username}
+                                onChange={e => setFormData({ ...formData, username: e.target.value })}
+                            />
+                            <TextField
+                                label='Телефон'
+                                value={formData.phoneNumber}
+                                onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })}
+                            />
+                            <TextField
+                                label='Местоположение'
+                                value={formData.location}
+                                onChange={e => setFormData({ ...formData, location: e.target.value })}
+                            />
+                            <TextField
+                                label='Язык'
+                                select
+                                value={formData.language}
+                                onChange={e => setFormData({ ...formData, language: e.target.value })}
+                            >
+                                <MenuItem value="ru">Русский</MenuItem>
+                                <MenuItem value="en">English</MenuItem>
+                            </TextField>
+                            <TextField
+                                label='Тема'
+                                select
+                                value={formData.themePreference}
+                                onChange={e => setFormData({ ...formData, themePreference: e.target.value })}
+                            >
+                                <MenuItem value="light">Светлая</MenuItem>
+                                <MenuItem value="dark">Темная</MenuItem>
+                            </TextField>
+                        </Box>
                         <TextField
-                            label='First Name'
-                            value={formData.firstName}
-                            onChange={e => setFormData({ ...formData, firstName: e.target.value })}
-                        />
-                        <TextField
-                            label='Last Name'
-                            value={formData.lastName}
-                            onChange={e => setFormData({ ...formData, lastName: e.target.value })}
-                        />
-                        <TextField
-                            label='Bio'
+                            label='Биография'
                             multiline
                             rows={3}
                             value={formData.bio}
                             onChange={e => setFormData({ ...formData, bio: e.target.value })}
+                            fullWidth
+                            sx={{ mt: 2 }}
                         />
                         <TextField
-                            label='Phone Number'
-                            value={formData.phoneNumber}
-                            onChange={e =>
-                                setFormData({ ...formData, phoneNumber: e.target.value })
-                            }
-                        />
-                        <TextField
-                            label='Location'
-                            value={formData.location}
-                            onChange={e => setFormData({ ...formData, location: e.target.value })}
+                            label='URL аватара'
+                            value={formData.avatarUrl}
+                            onChange={e => setFormData({ ...formData, avatarUrl: e.target.value })}
+                            fullWidth
+                            sx={{ mt: 2 }}
                         />
                         <Button
                             variant='contained'
