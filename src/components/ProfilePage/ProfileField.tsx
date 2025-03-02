@@ -10,7 +10,7 @@ interface ProfileFieldProps {
     editMode: boolean;
     value: string | null;
     type?: 'text' | 'select' | 'multiline';
-    selectItems?: { value: string; label: string }[];
+    selectItems?: readonly { value: string; label: string }[];
     multilineRows?: number;
 }
 
