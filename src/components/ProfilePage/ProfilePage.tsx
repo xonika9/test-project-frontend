@@ -2,7 +2,8 @@
 
 import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfile } from '@/app/store/authSlice';
 import { RootState } from '@/app/store/store';
 import { authApi } from '@/app/api/authApi';
 import { getAuthToken } from '@/utils/auth';
@@ -82,14 +83,20 @@ const ProfilePage = () => {
         },
     });
 
+    const dispatch = useDispatch();
+
     const mutation = useMutation({
         mutationFn: (data: UserProfile) => authApi.updateProfile(data),
-        onSuccess: () => {
+        onSuccess: (updatedProfile) => {
+            // Обновляем профиль в Redux store
+            dispatch(updateProfile(updatedProfile));
             queryClient.invalidateQueries({ queryKey: ['profile'] });
             setEditMode(false);
         },
-        onError: error => {
+        onError: (error) => {
             console.error('Profile update failed:', error);
+            // Можно добавить уведомление об ошибке
+            alert('Не удалось обновить профиль. Пожалуйста, попробуйте снова.');
         },
     });
 
@@ -157,7 +164,11 @@ const ProfilePage = () => {
                         </Typography>
                     </>
                 ) : (
-                    <Box component='form' sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <Box 
+                        component='form' 
+                        onSubmit={handleSubmit(onSubmit)}
+                        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+                    >
                         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
                             <Controller
                                 name='firstName'
