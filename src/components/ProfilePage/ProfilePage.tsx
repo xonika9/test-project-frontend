@@ -1,11 +1,12 @@
 'use client';
 
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query'; // Импортируем useQuery из @tanstack/react-query
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { authApi } from '@/app/api/authApi';
 import { getAuthToken } from '@/utils/auth';
+import { useState } from 'react';
 
 interface UserProfile {
     id: number;
@@ -63,10 +64,7 @@ const ProfilePage = () => {
                     <Typography variant='h4' component='h1'>
                         Profile
                     </Typography>
-                    <Button 
-                        variant='contained' 
-                        onClick={() => setEditMode(!editMode)}
-                    >
+                    <Button variant='contained' onClick={() => setEditMode(!editMode)}>
                         {editMode ? 'Cancel' : 'Edit'}
                     </Button>
                 </Box>
@@ -74,7 +72,8 @@ const ProfilePage = () => {
                 {!editMode ? (
                     <>
                         <Typography variant='body1' sx={{ mb: 1 }}>
-                            Name: {data?.name} {data?.firstName && `(${data.firstName} ${data.lastName})`}
+                            Name: {data?.name}{' '}
+                            {data?.firstName && `(${data.firstName} ${data.lastName})`}
                         </Typography>
                         <Typography variant='body1' sx={{ mb: 1 }}>
                             Email: {data?.email}
@@ -103,33 +102,35 @@ const ProfilePage = () => {
                         <TextField
                             label='First Name'
                             value={formData.firstName}
-                            onChange={e => setFormData({...formData, firstName: e.target.value})}
+                            onChange={e => setFormData({ ...formData, firstName: e.target.value })}
                         />
                         <TextField
                             label='Last Name'
                             value={formData.lastName}
-                            onChange={e => setFormData({...formData, lastName: e.target.value})}
+                            onChange={e => setFormData({ ...formData, lastName: e.target.value })}
                         />
                         <TextField
                             label='Bio'
                             multiline
                             rows={3}
                             value={formData.bio}
-                            onChange={e => setFormData({...formData, bio: e.target.value})}
+                            onChange={e => setFormData({ ...formData, bio: e.target.value })}
                         />
                         <TextField
                             label='Phone Number'
                             value={formData.phoneNumber}
-                            onChange={e => setFormData({...formData, phoneNumber: e.target.value})}
+                            onChange={e =>
+                                setFormData({ ...formData, phoneNumber: e.target.value })
+                            }
                         />
                         <TextField
                             label='Location'
                             value={formData.location}
-                            onChange={e => setFormData({...formData, location: e.target.value})}
+                            onChange={e => setFormData({ ...formData, location: e.target.value })}
                         />
-                        <Button 
-                            variant='contained' 
-                            color='primary' 
+                        <Button
+                            variant='contained'
+                            color='primary'
                             onClick={handleUpdateProfile}
                             sx={{ mt: 2 }}
                         >
