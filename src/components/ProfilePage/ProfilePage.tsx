@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query'; // Импортируем useQuery из @tanstack/react-query
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
@@ -14,6 +14,19 @@ interface UserProfile {
     email: string;
     createdAt: string;
     updatedAt: string;
+    firstName: string | null;
+    lastName: string | null;
+    username: string | null;
+    bio: string | null;
+    avatarUrl: string | null;
+    phoneNumber: string | null;
+    location: string | null;
+    language: string | null;
+    timezone: string | null;
+    themePreference: string | null;
+    lastLoginAt: string | null;
+    isActive: boolean;
+    role: string | null;
 }
 
 const ProfilePage = () => {
@@ -108,45 +121,59 @@ const ProfilePage = () => {
                             <TextField
                                 label='Имя'
                                 value={formData.firstName}
-                                onChange={e => setFormData({ ...formData, firstName: e.target.value })}
+                                onChange={e =>
+                                    setFormData({ ...formData, firstName: e.target.value })
+                                }
                             />
                             <TextField
                                 label='Фамилия'
                                 value={formData.lastName}
-                                onChange={e => setFormData({ ...formData, lastName: e.target.value })}
+                                onChange={e =>
+                                    setFormData({ ...formData, lastName: e.target.value })
+                                }
                             />
                             <TextField
                                 label='Логин'
                                 value={formData.username}
-                                onChange={e => setFormData({ ...formData, username: e.target.value })}
+                                onChange={e =>
+                                    setFormData({ ...formData, username: e.target.value })
+                                }
                             />
                             <TextField
                                 label='Телефон'
                                 value={formData.phoneNumber}
-                                onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })}
+                                onChange={e =>
+                                    setFormData({ ...formData, phoneNumber: e.target.value })
+                                }
                             />
                             <TextField
                                 label='Местоположение'
                                 value={formData.location}
-                                onChange={e => setFormData({ ...formData, location: e.target.value })}
+                                onChange={e =>
+                                    setFormData({ ...formData, location: e.target.value })
+                                }
                             />
                             <TextField
                                 label='Язык'
                                 select
                                 value={formData.language}
-                                onChange={e => setFormData({ ...formData, language: e.target.value })}
+                                onChange={e =>
+                                    setFormData({ ...formData, language: e.target.value })
+                                }
                             >
-                                <MenuItem value="ru">Русский</MenuItem>
-                                <MenuItem value="en">English</MenuItem>
+                                <MenuItem value='ru'>Русский</MenuItem>
+                                <MenuItem value='en'>English</MenuItem>
                             </TextField>
                             <TextField
                                 label='Тема'
                                 select
                                 value={formData.themePreference}
-                                onChange={e => setFormData({ ...formData, themePreference: e.target.value })}
+                                onChange={e =>
+                                    setFormData({ ...formData, themePreference: e.target.value })
+                                }
                             >
-                                <MenuItem value="light">Светлая</MenuItem>
-                                <MenuItem value="dark">Темная</MenuItem>
+                                <MenuItem value='light'>Светлая</MenuItem>
+                                <MenuItem value='dark'>Темная</MenuItem>
                             </TextField>
                         </Box>
                         <TextField
