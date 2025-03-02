@@ -5,14 +5,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '@/app/store/authSlice';
 import { RootState } from '@/app/store/store';
-import { authApi } from '@/app/api/authApi';
+import { authApi, UserProfile } from '@/app/api/authApi';
 import { getAuthToken } from '@/utils/auth';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
-import { UserProfile } from '@/app/api/authApi';
 
 const ProfilePage = () => {
     // Схема валидации
@@ -98,7 +96,7 @@ const ProfilePage = () => {
             reset({
                 ...data,
                 language: data.language as 'ru' | 'en' | null,
-                themePreference: data.themePreference as 'light' | 'dark' | null
+                themePreference: data.themePreference as 'light' | 'dark' | null,
             });
         }
     }, [data, reset]);
@@ -123,9 +121,9 @@ const ProfilePage = () => {
                 ...data!,
                 ...formData,
                 language: formData.language as 'ru' | 'en' | null,
-                themePreference: formData.themePreference as 'light' | 'dark' | null
+                themePreference: formData.themePreference as 'light' | 'dark' | null,
             };
-            
+
             console.log('Данные после обработки:', payload);
             const result = await mutation.mutateAsync(payload);
             console.log('Ответ сервера:', result);
@@ -149,7 +147,7 @@ const ProfilePage = () => {
                     )}
                 </Box>
 
-                <Box 
+                <Box
                     component='form'
                     onSubmit={handleSubmit(onSubmit)}
                     sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
@@ -401,10 +399,10 @@ const ProfilePage = () => {
                     {/* Дополнительная информация */}
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 2 }}>
                         <Typography variant='body2'>
-                            Дата регистрации: {new Date(data.createdAt).toLocaleDateString()}
+                            Дата регистрации: {new Date(data.createdAt).toLocaleString()}
                         </Typography>
                         <Typography variant='body2'>
-                            Последнее обновление: {new Date(data.updatedAt).toLocaleDateString()}
+                            Последнее обновление: {new Date(data.updatedAt).toLocaleString()}
                         </Typography>
                         <Typography variant='body2'>
                             Последний вход: {new Date(data.lastLoginAt || '').toLocaleString()}
