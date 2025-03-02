@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { LANGUAGES, THEMES } from '@/constants/profile';
-import { UserProfile } from '@/app/api/authApi';
 import ProfileField from './ProfileField';
+import { UserProfile } from '@/types/userProfile';
 
 interface ProfileViewProps {
     data: UserProfile;

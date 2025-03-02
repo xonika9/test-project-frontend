@@ -24,7 +24,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin = true }) => {
             if (isLogin) {
                 const loginResponse = await authApi.login({ email, password });
                 setAuthToken(loginResponse.token);
-                
+
                 const profile = await authApi.getProfile();
                 dispatch(
                     setCredentials({
@@ -35,11 +35,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin = true }) => {
             } else {
                 // Сначала регистрируем пользователя
                 await authApi.register({ name, email, password });
-                
+
                 // Затем выполняем вход, чтобы получить токен
                 const loginResponse = await authApi.login({ email, password });
                 setAuthToken(loginResponse.token);
-                
+
                 const profile = await authApi.getProfile();
                 dispatch(
                     setCredentials({

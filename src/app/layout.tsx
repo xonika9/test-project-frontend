@@ -8,7 +8,7 @@ import StoreProvider from '@/app/store/StoreProvider';
 import LayoutButtons from '@/components/LayoutButtons/LayoutButtons';
 import MUIThemeProvider from '@/components/MUIThemeProvider/MUIThemeProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Импортируем QueryClient и QueryClientProvider из @tanstack/react-query
-import { useState, useEffect } from 'react'; // Импортируем useState и useEffect
+import { useState } from 'react';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -19,7 +19,6 @@ const geistMono = Geist_Mono({
     variable: '--font-geist-mono',
     subsets: ['latin'],
 });
-
 
 export default function RootLayout({
     children,
@@ -35,7 +34,9 @@ export default function RootLayout({
                 <meta name='description' content={Metadata.description} />
             </head>
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                <QueryClientProvider client={queryClient}> {/* Оборачиваем QueryClientProvider */}
+                <QueryClientProvider client={queryClient}>
+                    {' '}
+                    {/* Оборачиваем QueryClientProvider */}
                     <StoreProvider>
                         <AppRouterCacheProvider>
                             <MUIThemeProvider>

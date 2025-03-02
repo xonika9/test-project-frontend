@@ -1,5 +1,5 @@
 import apiClient from './apiClient';
-import { Language, Theme } from '@/constants/profile';
+import { UserProfile } from '@/types/userProfile';
 
 interface LoginPayload {
     email: string;
@@ -22,39 +22,7 @@ interface RegisterResponse {
     email: string;
 }
 
-export interface UserProfile {
-    id: number;
-    name: string;
-    email: string;
-    createdAt: string;
-    updatedAt: string;
-    firstName: string | null;
-    lastName: string | null;
-    username: string | null;
-    bio: string | null;
-    avatarUrl: string | null;
-    phoneNumber: string | null;
-    location: string | null;
-    language: Language | null;
-    timezone: string | null;
-    themePreference: Theme | null;
-    lastLoginAt: string | null;
-    isActive: boolean;
-    role: string | null;
-}
-
-export interface UpdateProfilePayload {
-    firstName?: string | null;
-    lastName?: string | null;
-    username?: string | null;
-    bio?: string | null;
-    avatarUrl?: string | null;
-    phoneNumber?: string | null;
-    location?: string | null;
-    language?: string | null;
-    timezone?: string | null;
-    themePreference?: string | null;
-}
+class UpdateProfilePayload {}
 
 export const authApi = {
     login: async (payload: LoginPayload): Promise<LoginResponse> => {

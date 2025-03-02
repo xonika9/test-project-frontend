@@ -6,13 +6,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '@/app/store/authSlice';
 import { RootState } from '@/app/store/store';
-import { authApi, UserProfile } from '@/app/api/authApi';
+import { authApi } from '@/app/api/authApi';
 import { getAuthToken } from '@/utils/auth';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ProfileView from './ProfileView';
+import { UserProfile } from '@/types/userProfile';
 
 const ProfilePage = () => {
     // Схема валидации
