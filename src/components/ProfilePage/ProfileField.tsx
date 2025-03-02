@@ -70,7 +70,13 @@ const ProfileField = ({
                     }}
                 />
             ) : (
-                <Typography>{value || 'Не указано'}</Typography>
+                <Typography>
+                    {name === 'language' && value
+                        ? value === 'ru' ? 'Русский' : 'English'
+                    : name === 'themePreference' && value
+                        ? value === 'light' ? 'Светлая' : 'Темная'
+                    : value || 'Не указано'}
+                </Typography>
             )}
         </Box>
     );
