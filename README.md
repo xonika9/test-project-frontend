@@ -1,41 +1,103 @@
-# Test Project Frontend 🚀
+# Профиль пользователя
 
-Welcome to the Test Project Frontend! This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Проект представляет собой систему управления профилем пользователя с возможностью просмотра и редактирования данных.
 
-## Getting Started
+## Основные функции
 
-First, run the development server:
+- Просмотр профиля пользователя
+- Редактирование профиля
+- Поддержка мультиязычности (русский/английский)
+- Поддержка тем оформления (светлая/темная)
+- Валидация данных формы
+- Интеграция с бэкендом через API
+- Управление состоянием через Redux
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Технологический стек
+
+### Frontend
+- React (Next.js)
+- TypeScript
+- Redux Toolkit
+- Material UI
+- React Hook Form
+- Yup (валидация)
+- Axios (HTTP клиент)
+
+### Backend API
+- Аутентификация через JWT
+- REST API
+- Поддержка всех основных полей профиля
+
+## Структура проекта
+
+```
+src/
+├── app/                    # Основные страницы и роутинг
+│   ├── api/                # API клиент и типы
+│   ├── store/              # Redux store и слайсы
+│   └── (auth)/             # Страницы авторизации
+├── components/             # Компоненты UI
+│   └── ProfilePage/        # Компоненты страницы профиля
+├── constants/              # Константы приложения
+├── types/                  # Общие типы TypeScript
+├── utils/                  # Вспомогательные функции
+└── styles/                 # Глобальные стили
 ```
 
-Open [http://localhost:50521](http://localhost:50521) with your browser to see the result.
+## Основные компоненты
 
-You can start editing the page by modifying [`app/page.tsx`](./src/app/page.tsx). The page auto-updates as you edit the file.
+### ProfilePage
+Главная страница профиля, содержащая:
+- Отображение данных профиля
+- Форму редактирования
+- Кнопки управления
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ProfileView
+Компонент для отображения всех полей профиля:
+- Персональные данные (имя, фамилия)
+- Контактная информация (email, телефон)
+- Настройки (язык, тема)
+- Дополнительная информация (биография, аватар)
 
-## Learn More 📚
+### ProfileField
+Универсальный компонент для отображения/редактирования одного поля:
+- Поддержка текстовых полей
+- Поддержка выпадающих списков
+- Поддержка многострочного текста
+- Валидация и отображение ошибок
 
-To learn more about Next.js, take a look at the following resources:
+## Установка и запуск
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial
-- [Next.js GitHub Repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Установите зависимости:
+```bash
+npm install
+```
 
-## Deploy on Vercel 🚀
+2. Запустите проект:
+```bash
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Откройте в браузере:
+```
+http://localhost:3000
+```
 
-Check out our [Next.js Deployment Documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API документация
 
----
+### Получение профиля
+- Метод: GET
+- Эндпоинт: `/api/users/profile`
+- Требуется авторизация
 
-> **Note:** This project is configured to run on port 50521. Make sure this port is available when running the development server.
+### Обновление профиля
+- Метод: PUT
+- Эндпоинт: `/api/users/profile`
+- Тело запроса: JSON с обновляемыми полями
+- Требуется авторизация
+
+Подробная документация API доступна по адресу `/api-docs`
+
+## Лицензия
+
+MIT License
