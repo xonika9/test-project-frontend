@@ -72,9 +72,9 @@ const ProfileField = ({
             ) : (
                 <Typography>
                     {name === 'language' && value
-                        ? value === 'ru' ? 'Русский' : 'English'
+                        ? LANGUAGES.find(lang => lang.value === value)?.label
                     : name === 'themePreference' && value
-                        ? value === 'light' ? 'Светлая' : 'Темная'
+                        ? THEMES.find(theme => theme.value === value)?.label
                     : value || 'Не указано'}
                 </Typography>
             )}

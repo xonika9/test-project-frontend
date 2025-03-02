@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { LANGUAGES, THEMES } from '@/constants/profile';
 import { UserProfile } from '@/app/api/authApi';
 import ProfileField from './ProfileField';
 
@@ -72,10 +73,7 @@ const ProfileView = ({ data, editMode, control, errors }: ProfileViewProps) => {
                 editMode={editMode}
                 value={data.language}
                 type='select'
-                selectItems={[
-                    { value: 'ru', label: 'Русский' },
-                    { value: 'en', label: 'English' },
-                ]}
+                selectItems={LANGUAGES}
             />
 
             <ProfileField
@@ -86,10 +84,7 @@ const ProfileView = ({ data, editMode, control, errors }: ProfileViewProps) => {
                 editMode={editMode}
                 value={data.themePreference}
                 type='select'
-                selectItems={[
-                    { value: 'light', label: 'Светлая' },
-                    { value: 'dark', label: 'Темная' },
-                ]}
+                selectItems={THEMES}
             />
 
             <ProfileField

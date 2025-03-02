@@ -1,4 +1,5 @@
 import apiClient from './apiClient';
+import { Language, Theme } from '@/constants/profile';
 
 interface LoginPayload {
     email: string;
@@ -34,9 +35,9 @@ export interface UserProfile {
     avatarUrl: string | null;
     phoneNumber: string | null;
     location: string | null;
-    language: 'ru' | 'en' | null;
+    language: Language | null;
     timezone: string | null;
-    themePreference: 'light' | 'dark' | null;
+    themePreference: Theme | null;
     lastLoginAt: string | null;
     isActive: boolean;
     role: string | null;

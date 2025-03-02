@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Button, Paper, Typography } from '@mui/material';
+import { LANGUAGES, THEMES } from '@/constants/profile';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '@/app/store/authSlice';
@@ -29,13 +30,13 @@ const ProfilePage = () => {
         location: yup.string().nullable().defined(),
         language: yup
             .string()
-            .oneOf(['ru', 'en'] as const)
+            .oneOf(LANGUAGES.map(lang => lang.value))
             .nullable()
             .defined(),
         timezone: yup.string().nullable().defined(),
         themePreference: yup
             .string()
-            .oneOf(['light', 'dark'] as const)
+            .oneOf(THEMES.map(theme => theme.value))
             .nullable()
             .defined(),
     });
