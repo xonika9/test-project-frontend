@@ -27,6 +27,30 @@ interface UserProfile {
     email: string;
     createdAt: string;
     updatedAt: string;
+    firstName: string | null;
+    lastName: string | null;
+    username: string | null;
+    bio: string | null;
+    avatarUrl: string | null;
+    phoneNumber: string | null;
+    location: string | null;
+    language: string | null;
+    timezone: string | null;
+    themePreference: string | null;
+    lastLoginAt: string | null;
+    isActive: boolean;
+    role: string | null;
+}
+
+interface UpdateProfilePayload {
+    firstName?: string;
+    lastName?: string;
+    bio?: string;
+    phoneNumber?: string;
+    location?: string;
+    language?: string;
+    timezone?: string;
+    themePreference?: string;
 }
 
 export const authApi = {
@@ -42,6 +66,11 @@ export const authApi = {
 
     getProfile: async (): Promise<UserProfile> => {
         const response = await apiClient.get<UserProfile>('/users/profile');
+        return response.data;
+    },
+
+    updateProfile: async (payload: UpdateProfilePayload): Promise<UserProfile> => {
+        const response = await apiClient.patch<UserProfile>('/users/profile', payload);
         return response.data;
     }
 };
