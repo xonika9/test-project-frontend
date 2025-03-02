@@ -1,12 +1,15 @@
 'use client';
 
 import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query'; // Импортируем useQuery из @tanstack/react-query
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { authApi } from '@/app/api/authApi';
 import { getAuthToken } from '@/utils/auth';
 import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 interface UserProfile {
     id: number;
@@ -30,20 +33,22 @@ interface UserProfile {
 }
 
 const ProfilePage = () => {
-    const [editMode, setEditMode] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        username: '',
-        bio: '',
-        avatarUrl: '',
-        phoneNumber: '',
-        location: '',
-        language: 'ru',
-        timezone: 'Europe/Moscow',
-        themePreference: 'light',
+    // Схема валидации
+    const profileSchema = yup.object().shape({
+        firstName: yup.string().nullable(),
+        lastName: yup.string().nullable(),
+        username: yup.string().nullable(),
+        bio: yup.string().nullable(),
+        avatarUrl: yup.string().url('Некорректный URL').nullable(),
+        phoneNumber: yup.string().matches(/^\+?[0-9]{10,15}$/, 'Некорректный номер телефона').nullable(),
+        location: yup.string().nullable(),
+        language: yup.string().oneOf(['ru', 'en']).required(),
+        timezone: yup.string().required(),
+        themePreference: yup.string().oneOf(['light', 'dark']).required(),
     });
 
+    const [editMode, setEditMode] = useState(false);
+    const queryClient = useQueryClient();
     const token = useSelector((state: RootState) => state.auth.token);
 
     const { data, isLoading, isError } = useQuery<UserProfile, Error>({
@@ -51,21 +56,41 @@ const ProfilePage = () => {
         queryFn: authApi.getProfile,
         enabled: !!token || !!getAuthToken(),
         staleTime: 300000,
-        onSuccess: (data) => {
-            setFormData({
-                firstName: data?.firstName || '',
-                lastName: data?.lastName || '',
-                username: data?.username || '',
-                bio: data?.bio || '',
-                avatarUrl: data?.avatarUrl || '',
-                phoneNumber: data?.phoneNumber || '',
-                location: data?.location || '',
-                language: data?.language || 'ru',
-                timezone: data?.timezone || 'Europe/Moscow',
-                themePreference: data?.themePreference || 'light',
-            });
+    });
+
+    const { control, handleSubmit, reset, formState: { errors } } = useForm<UserProfile>({
+        resolver: yupResolver(profileSchema),
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            username: '',
+            bio: '',
+            avatarUrl: '',
+            phoneNumber: '',
+            location: '',
+            language: 'ru',
+            timezone: 'Europe/Moscow',
+            themePreference: 'light',
+        },
+    });
+
+    const mutation = useMutation({
+        mutationFn: (data: UserProfile) => authApi.updateProfile(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['profile'] });
+            setEditMode(false);
+        },
+        onError: (error) => {
+            console.error('Profile update failed:', error);
         }
     });
+
+    // Сбрасываем форму при изменении данных
+    useEffect(() => {
+        if (data) {
+            reset(data);
+        }
+    }, [data, reset]);
 
     if (isLoading) {
         return <Typography>Loading profile...</Typography>;
@@ -79,14 +104,8 @@ const ProfilePage = () => {
         return null;
     }
 
-    const handleUpdateProfile = async () => {
-        try {
-            await authApi.updateProfile(formData);
-            setEditMode(false);
-            // TODO: Add logic to refresh profile data
-        } catch (error) {
-            console.error('Profile update failed:', error);
-        }
+    const onSubmit = (data: UserProfile) => {
+        mutation.mutate(data);
     };
 
     return (
@@ -132,87 +151,137 @@ const ProfilePage = () => {
                 ) : (
                     <Box component='form' sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-                            <TextField
-                                label='Имя'
-                                value={formData.firstName}
-                                onChange={e =>
-                                    setFormData({ ...formData, firstName: e.target.value })
-                                }
+                            <Controller
+                                name="firstName"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label='Имя'
+                                        error={!!errors.firstName}
+                                        helperText={errors.firstName?.message}
+                                    />
+                                )}
                             />
-                            <TextField
-                                label='Фамилия'
-                                value={formData.lastName}
-                                onChange={e =>
-                                    setFormData({ ...formData, lastName: e.target.value })
-                                }
+                            <Controller
+                                name="lastName"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label='Фамилия'
+                                        error={!!errors.lastName}
+                                        helperText={errors.lastName?.message}
+                                    />
+                                )}
                             />
-                            <TextField
-                                label='Логин'
-                                value={formData.username}
-                                onChange={e =>
-                                    setFormData({ ...formData, username: e.target.value })
-                                }
+                            <Controller
+                                name="username"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label='Логин'
+                                        error={!!errors.username}
+                                        helperText={errors.username?.message}
+                                    />
+                                )}
                             />
-                            <TextField
-                                label='Телефон'
-                                value={formData.phoneNumber}
-                                onChange={e =>
-                                    setFormData({ ...formData, phoneNumber: e.target.value })
-                                }
+                            <Controller
+                                name="phoneNumber"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label='Телефон'
+                                        error={!!errors.phoneNumber}
+                                        helperText={errors.phoneNumber?.message}
+                                    />
+                                )}
                             />
-                            <TextField
-                                label='Местоположение'
-                                value={formData.location}
-                                onChange={e =>
-                                    setFormData({ ...formData, location: e.target.value })
-                                }
+                            <Controller
+                                name="location"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label='Местоположение'
+                                        error={!!errors.location}
+                                        helperText={errors.location?.message}
+                                    />
+                                )}
                             />
-                            <TextField
-                                label='Язык'
-                                select
-                                value={formData.language}
-                                onChange={e =>
-                                    setFormData({ ...formData, language: e.target.value })
-                                }
-                            >
-                                <MenuItem value='ru'>Русский</MenuItem>
-                                <MenuItem value='en'>English</MenuItem>
-                            </TextField>
-                            <TextField
-                                label='Тема'
-                                select
-                                value={formData.themePreference}
-                                onChange={e =>
-                                    setFormData({ ...formData, themePreference: e.target.value })
-                                }
-                            >
-                                <MenuItem value='light'>Светлая</MenuItem>
-                                <MenuItem value='dark'>Темная</MenuItem>
-                            </TextField>
+                            <Controller
+                                name="language"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        select
+                                        label='Язык'
+                                        error={!!errors.language}
+                                        helperText={errors.language?.message}
+                                    >
+                                        <MenuItem value='ru'>Русский</MenuItem>
+                                        <MenuItem value='en'>English</MenuItem>
+                                    </TextField>
+                                )}
+                            />
+                            <Controller
+                                name="themePreference"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        select
+                                        label='Тема'
+                                        error={!!errors.themePreference}
+                                        helperText={errors.themePreference?.message}
+                                    >
+                                        <MenuItem value='light'>Светлая</MenuItem>
+                                        <MenuItem value='dark'>Темная</MenuItem>
+                                    </TextField>
+                                )}
+                            />
                         </Box>
-                        <TextField
-                            label='Биография'
-                            multiline
-                            rows={3}
-                            value={formData.bio}
-                            onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                            fullWidth
-                            sx={{ mt: 2 }}
+                        <Controller
+                            name="bio"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label='Биография'
+                                    multiline
+                                    rows={3}
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    error={!!errors.bio}
+                                    helperText={errors.bio?.message}
+                                />
+                            )}
                         />
-                        <TextField
-                            label='URL аватара'
-                            value={formData.avatarUrl}
-                            onChange={e => setFormData({ ...formData, avatarUrl: e.target.value })}
-                            fullWidth
-                            sx={{ mt: 2 }}
+                        <Controller
+                            name="avatarUrl"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label='URL аватара'
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    error={!!errors.avatarUrl}
+                                    helperText={errors.avatarUrl?.message}
+                                />
+                            )}
                         />
                         <Button
+                            type="submit"
                             variant='contained'
                             color='primary'
-                            onClick={handleUpdateProfile}
                             sx={{ mt: 2 }}
+                            disabled={mutation.isPending}
                         >
-                            Save Changes
+                            {mutation.isPending ? 'Saving...' : 'Save Changes'}
                         </Button>
                     </Box>
                 )}
