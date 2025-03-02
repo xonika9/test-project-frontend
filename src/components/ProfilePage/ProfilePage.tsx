@@ -87,13 +87,13 @@ const ProfilePage = () => {
 
     const mutation = useMutation({
         mutationFn: (data: UserProfile) => authApi.updateProfile(data),
-        onSuccess: (updatedProfile) => {
+        onSuccess: updatedProfile => {
             // Обновляем профиль в Redux store
             dispatch(updateProfile(updatedProfile));
             queryClient.invalidateQueries({ queryKey: ['profile'] });
             setEditMode(false);
         },
-        onError: (error) => {
+        onError: error => {
             console.error('Profile update failed:', error);
             // Можно добавить уведомление об ошибке
             alert('Не удалось обновить профиль. Пожалуйста, попробуйте снова.');
@@ -138,8 +138,7 @@ const ProfilePage = () => {
                 {!editMode ? (
                     <>
                         <Typography variant='body1' sx={{ mb: 1 }}>
-                            Name: {data?.name}{' '}
-                            {data?.firstName && `(${data.firstName} ${data.lastName})`}
+                            Name: {data?.firstName && `${data.firstName} ${data.lastName}`}
                         </Typography>
                         <Typography variant='body1' sx={{ mb: 1 }}>
                             Email: {data?.email}
@@ -164,8 +163,8 @@ const ProfilePage = () => {
                         </Typography>
                     </>
                 ) : (
-                    <Box 
-                        component='form' 
+                    <Box
+                        component='form'
                         onSubmit={handleSubmit(onSubmit)}
                         sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
                     >
