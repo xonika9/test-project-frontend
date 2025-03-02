@@ -35,20 +35,21 @@ interface UserProfile {
 
 const ProfilePage = () => {
     // Схема валидации
-    const profileSchema = yup.object().shape({
-        firstName: yup.string().nullable(),
-        lastName: yup.string().nullable(),
-        username: yup.string().nullable(),
-        bio: yup.string().nullable(),
-        avatarUrl: yup.string().url('Некорректный URL').nullable(),
+    const profileSchema = yup.object({
+        firstName: yup.string().nullable().defined(),
+        lastName: yup.string().nullable().defined(),
+        username: yup.string().nullable().defined(),
+        bio: yup.string().nullable().defined(),
+        avatarUrl: yup.string().url('Некорректный URL').nullable().defined(),
         phoneNumber: yup
             .string()
             .matches(/^\+?[0-9]{10,15}$/, 'Некорректный номер телефона')
-            .nullable(),
-        location: yup.string().nullable(),
-        language: yup.string().oneOf(['ru', 'en']).required(),
-        timezone: yup.string().required(),
-        themePreference: yup.string().oneOf(['light', 'dark']).required(),
+            .nullable()
+            .defined(),
+        location: yup.string().nullable().defined(),
+        language: yup.string().oneOf(['ru', 'en'] as const).nullable().defined(),
+        timezone: yup.string().nullable().defined(),
+        themePreference: yup.string().oneOf(['light', 'dark'] as const).nullable().defined(),
     });
 
     const [editMode, setEditMode] = useState(false);
@@ -62,21 +63,23 @@ const ProfilePage = () => {
         staleTime: 300000,
     });
 
+    type ProfileFormValues = yup.InferType<typeof profileSchema>;
+
     const {
         control,
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<UserProfile>({
+    } = useForm<ProfileFormValues>({
         resolver: yupResolver(profileSchema),
         defaultValues: {
-            firstName: '',
-            lastName: '',
-            username: '',
-            bio: '',
-            avatarUrl: '',
-            phoneNumber: '',
-            location: '',
+            firstName: null,
+            lastName: null,
+            username: null,
+            bio: null,
+            avatarUrl: null,
+            phoneNumber: null,
+            location: null,
             language: 'ru',
             timezone: 'Europe/Moscow',
             themePreference: 'light',
@@ -86,7 +89,7 @@ const ProfilePage = () => {
     const dispatch = useDispatch();
 
     const mutation = useMutation({
-        mutationFn: (data: UserProfile) => authApi.updateProfile(data),
+        mutationFn: (data: ProfileFormValues) => authApi.updateProfile(data),
         onSuccess: updatedProfile => {
             // Обновляем профиль в Redux store
             dispatch(updateProfile(updatedProfile));
@@ -119,7 +122,7 @@ const ProfilePage = () => {
         return null;
     }
 
-    const onSubmit = (data: UserProfile) => {
+    const onSubmit = (data: ProfileFormValues) => {
         mutation.mutate(data);
     };
 
