@@ -139,7 +139,7 @@ const ProfilePage = () => {
             <Paper elevation={3} sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
                     <Typography variant='h4' component='h1'>
-                        Profile
+                        Профиль
                     </Typography>
                     {!editMode && (
                         <Button variant='contained' onClick={() => setEditMode(true)}>
@@ -149,34 +149,34 @@ const ProfilePage = () => {
                 </Box>
 
                 <Box component='form' onSubmit={handleSubmit(onSubmit)}>
-                  <ProfileView 
-                    data={data} 
-                    editMode={editMode} 
-                    control={control}
-                    errors={errors}
-                  />
-                  
-                  {editMode && (
-                    <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                      <Button
-                        type='submit'
-                        variant='contained'
-                        color='primary'
-                        disabled={mutation.isPending}
-                        sx={{ minWidth: 200 }}
-                      >
-                        {mutation.isPending ? 'Сохранение...' : 'Сохранить изменения'}
-                      </Button>
-                      <Button
-                        variant='outlined'
-                        color='error'
-                        onClick={() => setEditMode(false)}
-                        sx={{ minWidth: 200 }}
-                      >
-                        Отмена
-                      </Button>
-                    </Box>
-                  )}
+                    <ProfileView
+                        data={data}
+                        editMode={editMode}
+                        control={control}
+                        errors={errors}
+                    />
+
+                    {editMode && (
+                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                color='primary'
+                                disabled={mutation.isPending}
+                                sx={{ minWidth: 200 }}
+                            >
+                                {mutation.isPending ? 'Сохранение...' : 'Сохранить изменения'}
+                            </Button>
+                            <Button
+                                variant='outlined'
+                                color='error'
+                                onClick={() => setEditMode(false)}
+                                sx={{ minWidth: 200 }}
+                            >
+                                Отмена
+                            </Button>
+                        </Box>
+                    )}
                 </Box>
             </Paper>
         </Box>

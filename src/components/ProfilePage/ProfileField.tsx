@@ -28,7 +28,7 @@ const ProfileField = ({
         <Box
             sx={{
                 display: 'flex',
-                alignItems: name === 'avatarUrl' && value && !editMode ? 'flex-start' : 'center',
+                alignItems: 'center',
                 gap: 2,
             }}
         >
@@ -48,7 +48,7 @@ const ProfileField = ({
                             multiline={type === 'multiline'}
                             rows={multilineRows}
                             error={!!error}
-                            helperText={errors?.avatarUrl?.message}
+                            helperText={error?.message}
                         >
                             {selectItems.map(item => (
                                 <MenuItem key={item.value} value={item.value}>
@@ -63,10 +63,10 @@ const ProfileField = ({
                     src={value}
                     alt='Аватар'
                     style={{
-                        width: 100,
-                        height: 100,
+                        width: 200,
+                        height: 200,
                         borderRadius: '50%',
-                        objectFit: 'cover'
+                        objectFit: 'cover',
                     }}
                 />
             ) : (
